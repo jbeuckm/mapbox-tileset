@@ -1,40 +1,30 @@
 const { request } = require('https')
-const { createReadStream } = require('fs')
 const { MAPBOX_API_HOST } = require('../../constants.json')
-const FormData = require('form-data')
 const getCredentials = require('../../getCredentials')
 const querystring = require('querystring')
 
-exports.command = 'create <source_id> <file>'
-exports.desc = 'Create a tileset source'
+exports.command = 'list'
+exports.desc = 'List tilesets'
 exports.builder = {}
 exports.handler = function(argv) {
   const { username, token } = getCredentials(argv)
 
-  const readStream = createReadStream(argv.file)
-
-  const form = new FormData()
-  form.append('file', readStream)
-
   const req = request(
     {
       host: MAPBOX_API_HOST,
-      path: `/tilesets/v1/sources/${username}/${argv.source_id}?${querystring.stringify({
+      path: `/tilesets/v1/${username}?${querystring.stringify({
         access_token: token,
       })}`,
-      method: 'POST',
-      headers: form.getHeaders(),
+      method: 'GET',
     },
+
     response =>
       response.on('data', data => {
         process.stdout.write(data)
       })
   )
-
-  form.pipe(req)
-
   req.on('error', e => {
     console.error(e)
   })
-  //  req.end()
+  req.end()
 }
