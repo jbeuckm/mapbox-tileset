@@ -4,6 +4,17 @@ Operate the tilesets API to upload and generate tilesets for your Mapbox maps.
 
 The [tilesets API](https://docs.mapbox.com/api/maps/#tilesets) works with two basic entities: the `tileset-source` and the `tileset`. To generate a tile layer for a map, you need to upload one or more files to a `tileset-source` and then create a "recipe" that specifies which sources at which zoom levels should appear in a generated `tileset`.
 
+## Setup
+
+Mapbox requires an access token with permissions to create, list, delete, etc. the entities that comprise a tileset. Create an account and create an access token with the needed permissions. Pass the username and token to this tool by creating a `.env` file with these two values:
+
+```
+MAPBOX_USERNAME=abc
+MAPBOX_TOKEN=xyz
+```
+
+Alternatively, send the username as a CLI param `-u <username>` and the token as `-t <access_token>`.
+
 ### Create a tileset-source
 
 `mapbox-tileset source create <source-id> <geometry-file>`
