@@ -33,8 +33,8 @@ To generate a `tileset` from a `tileset-source`, use a `recipe` to specify which
     "layers": {
       "layer_id": {
         "source": "mapbox://tileset-source/my-username/my-tileset-source",
-        "minzoom": 2,
-        "maxzoom": 12
+        "minzoom": 5,
+        "maxzoom": 8
       }
     }
   }
@@ -72,6 +72,10 @@ This step generates a job that can take quite a while to complete, depending on 
 ### List available tilesets
 
 `mapbox-tileset tileset list`
+
+### Get recipe of a tileset
+
+`mapbox-tileset tileset recipe <tileset-id>`
 
 ### Delete a tileset
 
