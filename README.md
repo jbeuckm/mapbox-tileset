@@ -59,7 +59,7 @@ This step generates a job that can take quite a while to complete, depending on 
 
 `mapbox-tileset tileset status <tileset-id>`
 
-## Miscellaneous commands:
+## Other commands:
 
 ### List available tileset-sources
 
