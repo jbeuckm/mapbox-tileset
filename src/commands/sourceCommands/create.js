@@ -1,40 +1,35 @@
-const { request } = require('https')
-const { createReadStream } = require('fs')
+const { Curl } = require('node-libcurl')
 const { MAPBOX_API_HOST } = require('../../constants.json')
-const FormData = require('form-data')
 const getCredentials = require('../../getCredentials')
 const querystring = require('querystring')
 
 exports.command = 'create <source_id> <file>'
 exports.desc = 'Create a tileset source'
 exports.builder = {}
-exports.handler = function(argv) {
+exports.handler = async function(argv) {
   const { username, token } = getCredentials(argv)
 
-  const readStream = createReadStream(argv.file)
+  const curl = new Curl()
+  const close = curl.close.bind(curl)
 
-  const form = new FormData()
-  form.append('file', readStream)
+  const url = `https://${MAPBOX_API_HOST}/tilesets/v1/sources/${username}/${
+    argv.source_id
+  }?${querystring.stringify({
+    access_token: token,
+  })}`
 
-  const req = request(
-    {
-      host: MAPBOX_API_HOST,
-      path: `/tilesets/v1/sources/${username}/${argv.source_id}?${querystring.stringify({
-        access_token: token,
-      })}`,
-      method: 'POST',
-      headers: form.getHeaders(),
-    },
-    response =>
-      response.on('data', data => {
-        process.stdout.write(data)
-      })
-  )
+  curl.setOpt(Curl.option.URL, url)
+  curl.setOpt(Curl.option.HTTPPOST, [{ name: 'file', file: argv.file, type: 'application/text' }])
 
-  form.pipe(req)
+  const makeRequest = () =>
+    new Promise((resolve, reject) => {
+      curl.on('end', resolve)
+      curl.on('error', reject)
 
-  req.on('error', e => {
-    console.error(e)
-  })
-  //  req.end()
+      curl.perform()
+    })
+
+  await makeRequest()
+    .then(console.log)
+    .catch(console.log)
 }
