@@ -19,7 +19,11 @@ Alternatively, send the username as a CLI param `-u <username>` and the token as
 
 `mapbox-tileset source validate <geometry-file>`
 
-This checks that each line of the file is valid JSON and that the first coordinate of each polygon is the same as the last.
+This checks that
+* each line of the file is valid JSON
+* each point is an array of two numbers
+* the first coordinate of each polygon is the same as the last
+* points are not repeated within a polygon
 
 ### Create a tileset-source
 
