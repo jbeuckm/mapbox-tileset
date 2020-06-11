@@ -15,6 +15,12 @@ MAPBOX_TOKEN=xyz
 
 Alternatively, send the username as a CLI param `-u <username>` and the token as `-t <access_token>`.
 
+### Check your geometry file
+
+`mapbox-tileset source validate <geometry-file>`
+
+This checks that each line of the file is valid JSON and that the first coordinate of each polygon is the same as the last.
+
 ### Create a tileset-source
 
 `mapbox-tileset source create <source-id> <geometry-file>`
