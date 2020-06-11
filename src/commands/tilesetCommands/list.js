@@ -19,8 +19,9 @@ exports.handler = function(argv) {
     },
 
     response =>
-      response.on('data', data => {
-        process.stdout.write(data)
+      response.on('data', json => {
+        const data = JSON.parse(json)
+        process.stdout.write(JSON.stringify(data, null, 2))
       })
   )
   req.on('error', e => {
